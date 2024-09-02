@@ -1,7 +1,7 @@
 import pyHMT2D
 import inspect
 
-def explore_ras_controller(inspect_methods=False):
+def explore_ras_controller(inspect_methods=False, inspect_docstrings=False):
     # Initialize the HEC-RAS model
     version = "6.1.0"  # Replace with your HEC-RAS version
     faceless = True  # Run HEC-RAS without GUI
@@ -35,6 +35,12 @@ def explore_ras_controller(inspect_methods=False):
                     # Get the signature of the method
                     signature = inspect.signature(method)
                     print(f"{method_name}{signature}")
+                    
+                    # Optionally print the docstring for more insight
+                    if inspect_docstrings:
+                        docstring = inspect.getdoc(method)
+                        print(f"    Docstring: {docstring}")
+                
                 except ValueError:
                     # If we can't get the signature, just print the method name
                     print(f"{method_name} (signature not available)")
@@ -49,4 +55,4 @@ def explore_ras_controller(inspect_methods=False):
     hec_ras_model.exit_model()
     
 if __name__ == "__main__":
-    explore_ras_controller(inspect_methods=True)
+    explore_ras_controller(inspect_methods=True, inspect_docstrings=True)

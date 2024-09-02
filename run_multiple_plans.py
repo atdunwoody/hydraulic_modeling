@@ -31,11 +31,13 @@ def run_HEC_RAS(project_file, terrain_file):
             # Set the current plan
             successful = ras.Plan_SetCurrent(plan)
             print(f"Plan Changed Successfully: {successful}")
+            
             # Run the model for the current plan
-            #my_hec_ras_model.run_model()
-            ras.Plan_New()
-            print("Current plan file:", plan)
-
+            if successful:
+                my_hec_ras_model.run_model()
+            else:
+                print(f"Error occurred while setting plan {plan}")
+            
 
         except Exception as e:
             print(f"Error occurred while running plan {plan}: {e}")
