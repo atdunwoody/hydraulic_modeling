@@ -1,35 +1,31 @@
-import pyhecdss
-import os 
+import csv
 
-def export_hecras_dss(dss_file_path, output_directory):
-    # Open the DSS file
-    with pyhecdss.DSSFile(dss_file_path) as dss_file:
-        # Get the list of paths in the DSS file
-        paths = dss_file.get_pathnames()
+# Define the input and output file paths
+input_file = r"Y:\ATD\GIS\Bennett\Site VIsits\231006\RTK GNSS\231006-ME-RAW.txt"
+output_file = r"Y:\ATD\GIS\Bennett\Site VIsits\231006\RTK GNSS\231006-ME-RAW.csv"
 
-        for path in paths:
-            # Read the data for each path
-            data = dss_file.read(path)
-            
-            # Create an output filename based on the DSS path
-            output_file = path.replace('/', '_').strip('_') + '.csv'
-            output_path = os.path.join(output_directory, output_file)
-            
-            # Export the data to a CSV file
-            if isinstance(data, pyhecdss.TimeSeriesContainer):
-                data.write_csv(output_path)
-            elif isinstance(data, pyhecdss.RegularTimeSeriesContainer):
-                data.write_csv(output_path)
-            elif isinstance(data, pyhecdss.GridContainer):
-                data.write_grid_ascii(output_path)
-            else:
-                print(f"Unsupported data type for path: {path}")
-            
-            print(f"Exported {path} to {output_path}")
+# Initialize variables to hold the headers and data
+headers = None
+data = []
 
-if __name__ == "__main__":
-    dss_file_path = r"C:\ATD\Hydraulic Models\Bennett_Test\MW_Valleys.dss"
-    output_directory = r"C:\ATD\Hydraulic Models\Bennett_Test\DSS_Outputs"
-    if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
-    export_hecras_dss(dss_file_path, output_directory)
+# Read the input file and extract headers and data
+with open(input_file, 'r') as infile:
+    for line in infile:
+        # Check if the line contains the header
+        if line.startswith("Header>> Delimiter(,) FileFormat("):
+            # Extract the headers from the line
+            headers = line.strip()[len("Header>> Delimiter(,) FileFormat("):-len(") <<")].split(',')
+        else:
+            # Add the data rows to the data list
+            data.append(line.strip().split(','))
+
+# Write the data to the CSV file
+with open(output_file, 'w', newline='') as outfile:
+    writer = csv.writer(outfile)
+    # Write the headers first
+    if headers:
+        writer.writerow(headers)
+    # Write the data rows
+    writer.writerows(data)
+
+print(f"Data has been successfully converted to {output_file}")

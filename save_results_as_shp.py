@@ -50,11 +50,6 @@ def extract_and_save_rasters(hdf_path, output_dir):
             export_as_points(x_coords, y_coords, data, output_dir, "Max_Water_Surface_TimeStep_Last")
             
 
-def print_hdf_structure(hdf_path):
-    with h5py.File(hdf_path, 'r') as hdf_file:
-        def print_structure(name, obj):
-            print(name)
-        hdf_file.visititems(print_structure)
 
 
 if __name__ == "__main__":

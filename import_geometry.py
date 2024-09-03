@@ -29,7 +29,7 @@ ras_controller = hec_ras_model._RASController
 ras_controller.Geometry_GISImport("MW_Valley", gis_geometry_file)
 
 # After importing, the geometry is added to the project
-# You may need to associate this geometry with a specific plan
+# need to associate this geometry with a specific plan
 
 # Save the updated project
 hec_ras_model.save_project()

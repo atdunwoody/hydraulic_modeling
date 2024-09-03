@@ -1,3 +1,8 @@
+"""
+This script updates the Current Plan in the project file to the specified plan.
+Current Plan in HEC-RAS project must be set before it is opened. Once a new plan is set, it must be closed and reopened to take effect.
+"""
+
 import os
 
 def set_current_plan(file_path, new_plan):
