@@ -1,5 +1,6 @@
 import os
 import re
+import numpy as np
 
 def create_hydrograph(max_flow_value, ramp_steps=2, steady_steps=3):
     """
@@ -15,6 +16,12 @@ def create_hydrograph(max_flow_value, ramp_steps=2, steady_steps=3):
     """
     ramp = [max_flow_value * (i + 1) / (ramp_steps ** 3) for i in range(ramp_steps)]
     steady = [max_flow_value] * steady_steps
+    #round ramp to 1 decimal place if it is less than 1
+    if ramp[0] < 1:
+        ramp = [round(x, 1) for x in ramp]
+    #round ramp to whole number if it is greater than 1
+    else:
+        ramp = [round(x) for x in ramp]
     return ramp + steady
 
 def update_flow_hydrograph(input_file, new_hydrograph, new_title, max_flow_value):
@@ -53,9 +60,12 @@ def update_flow_hydrograph(input_file, new_hydrograph, new_title, max_flow_value
             lines[i] = new_flow_title
         
         elif line.strip().startswith("Flow Title=") and new_title is None:
+            print(f"Flow Title not provided. Updating based on the max flow value: {max_flow_value}")
             old_title = re.search(r'Flow Title=(.*)', lines[0]).group(1)
             old_title_prefix = old_title.split('_')[0]
+            print(f"Old TItle Prefix: {old_title_prefix}")
             new_title = f"{old_title_prefix}_{max_flow_value:02d}cms"
+            lines[i] = f"Flow Title={new_title}\n"
     
     #get directory
     dir_name = os.path.dirname(input_file)
@@ -116,10 +126,13 @@ def update_plan_file(file_path, new_flow_file, new_title, max_flow_value):
             old_title = re.search(r'Plan Title=(.*)', lines[0]).group(1)
             old_title_prefix = old_title.split('_')[0]
             new_title = f"{old_title_prefix}_{max_flow_value:02d}cms"
+            lines[i] = f"Plan Title={new_title}\n"
+            print(f"Plan Title not provided. Updating based on the max flow value: {max_flow_value}")
         elif line.startswith("Short Identifier") and new_title is None:
             old_title = re.search(r'Short Identifier=(.*)', lines[0]).group(1)
             old_title_prefix = old_title.split('_')[0]
             new_title = f"{old_title_prefix}_{max_flow_value:02d}cms"
+            lines[i] = f"Short Identifier={new_title}\n"
     # Increment the extension number
     #get directory
     dir_name = os.path.dirname(file_path)
@@ -166,6 +179,8 @@ def update_prj_file(prj_file_path, new_unsteady_file, new_plan_file):
         lines = file.readlines()
 
     # Find the last Unsteady File and Plan File lines
+    unsteady_exists = False
+    plan_exists = False
     last_unsteady_index = -1
     last_plan_index = -1
     for i, line in enumerate(lines):
@@ -226,12 +241,14 @@ def generate_hydrograph_and_update_plan(input_flow_file, input_plan_file, input_
     update_prj_file(input_prj_file, new_flow_file, new_plan_file)
 
 if __name__ == "__main__":
-    
-    input_flow_file_path = r"C:\ATD\Hydraulic Models\Bennett_Test\MW_Valleys.u18"
-    input_plan_file_path = r"C:\ATD\Hydraulic Models\Bennett_Test\MW_Valleys.p20"
-    input_prj_file_path = r"C:\ATD\Hydraulic Models\Bennett_Test\MW_Valleys.prj"
 
-    max_flow_value_list = [2, 5, 10]
+    
+    input_plan_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.p01"
+    input_prj_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.prj"
+    input_flow_file_path =r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.u01"
+
+    max_flow_value_list = np.arange(1, 11, 1)  # List of maximum flow values to generate hydrographs for
+
     # Set to a string to replace the Short Identifier and Plan Title and Flow Title
     new_title = None # If None, the title will be updated based on {Text before '_' in old plan title}_{the max flow value}cms
     for max_flow_value in max_flow_value_list:

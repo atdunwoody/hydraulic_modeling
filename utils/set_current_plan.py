@@ -15,8 +15,10 @@ def set_current_plan(file_path, new_plan):
         raise FileNotFoundError(f"Project file not found: {file_path}")
     file_dir = os.path.dirname(file_path)
     ext_exists = False
+    new_plan_ext = new_plan.split(".")[-1]
+    print(f"new_plan_ext: {new_plan_ext}")
     for file in os.listdir(file_dir):
-        if file.endswith(f".{new_plan}"):
+        if file.endswith(f".{new_plan_ext}"):
             ext_exists = True
             break
     if not ext_exists:
@@ -31,7 +33,7 @@ def set_current_plan(file_path, new_plan):
     # Replace the Current Plan line
     for i, line in enumerate(lines):
         if line.startswith("Current Plan="):
-            lines[i] = f"Current Plan={new_plan}\n"
+            lines[i] = f"Current Plan={new_plan_ext}\n"
             break
     
     # Write the updated content back to the file
