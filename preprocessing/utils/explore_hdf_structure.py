@@ -1,3 +1,4 @@
+from osgeo import gdal
 import h5py
 
 def print_hdf_structure(hdf_path):
@@ -7,5 +8,5 @@ def print_hdf_structure(hdf_path):
         hdf_file.visititems(print_structure)
 
 if __name__ == "__main__":
-    hdf_path = r"C:\ATD\Hydraulic Models\Bennett_Test\MW_Valleys.p01.hdf"
+    hdf_path = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.p01.hdf"
     print_hdf_structure(hdf_path)

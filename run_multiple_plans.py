@@ -1,6 +1,6 @@
 import pyHMT2D
-from utils.get_plan_names import extract_plan_titles
-from utils.set_current_plan import set_current_plan
+from preprocessing.get_plan_names import extract_plan_titles
+from preprocessing.set_current_plan import set_current_plan
 import os
 
 def run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array = []):
