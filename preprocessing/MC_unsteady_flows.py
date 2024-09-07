@@ -16,13 +16,14 @@ def create_hydrograph(max_flow_value, ramp_steps=2, steady_steps=3):
     """
     ramp = [max_flow_value * (i + 1) / (ramp_steps ** 3) for i in range(ramp_steps)]
     steady = [max_flow_value] * steady_steps
-    #round ramp to 1 decimal place if it is less than 1
-    if ramp[0] < 1:
-        ramp = [round(x, 1) for x in ramp]
-    #round ramp to whole number if it is greater than 1
-    else:
-        ramp = [round(x) for x in ramp]
+    # #round ramp to 1 decimal place if it is less than 1
+    # if ramp[0] < 1:
+    #     ramp = [round(x, 1) for x in ramp]
+    # #round ramp to whole number if it is greater than 1
+    # else:
+    #     ramp = [round(x) for x in ramp]
     return ramp + steady
+
 
 def update_flow_hydrograph(input_file, new_hydrograph, new_title, max_flow_value):
     """
@@ -48,9 +49,10 @@ def update_flow_hydrograph(input_file, new_hydrograph, new_title, max_flow_value
             
             # Replace the subsequent line with the new hydrograph values
             formatted_hydrograph = ''.join(
-                (f'      {str(x).lstrip("0")}' if 0 < x < 1 else f'{x:.6g}').rjust(8)
+                f'{x:8.3f}' if x >= 1 or x == 0 else f' {x:7.3f}'  # Ensures 8 characters for each number
                 for x in new_hydrograph
             ).rstrip()  # Remove the trailing spaces after the last number
+            
             lines[i + 1] = formatted_hydrograph + '\n'
         
         elif line.strip().startswith("Flow Title=") and new_title is not None:
@@ -63,16 +65,16 @@ def update_flow_hydrograph(input_file, new_hydrograph, new_title, max_flow_value
             print(f"Flow Title not provided. Updating based on the max flow value: {max_flow_value}")
             old_title = re.search(r'Flow Title=(.*)', lines[0]).group(1)
             old_title_prefix = old_title.split('_')[0]
-            print(f"Old TItle Prefix: {old_title_prefix}")
+            print(f"Old Title Prefix: {old_title_prefix}")
             new_title = f"{old_title_prefix}_{max_flow_value:02d}cms"
             lines[i] = f"Flow Title={new_title}\n"
     
-    #get directory
+    # Get directory
     dir_name = os.path.dirname(input_file)
-    #find all .p## files in the directory
+    # Find all .p## files in the directory
     import glob
     p_files = glob.glob(os.path.join(dir_name, '*.p[0-9][0-9]'))
-    #find the highest number in p_files
+    # Find the highest number in p_files
     highest_number = 0
     for p_file in p_files:
         base_name, ext = os.path.splitext(p_file)
@@ -243,11 +245,11 @@ def generate_hydrograph_and_update_plan(input_flow_file, input_plan_file, input_
 if __name__ == "__main__":
 
     
-    input_plan_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.p01"
-    input_prj_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.prj"
-    input_flow_file_path =r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.u01"
+    input_plan_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_Valleys.p01"
+    input_prj_file_path = r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_Valleys.prj"
+    input_flow_file_path =r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_Valleys.u01"
 
-    max_flow_value_list = np.arange(1, 11, 1)  # List of maximum flow values to generate hydrographs for
+    max_flow_value_list = [0.25, 0.75, 1, 1.5, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     # Set to a string to replace the Short Identifier and Plan Title and Flow Title
     new_title = None # If None, the title will be updated based on {Text before '_' in old plan title}_{the max flow value}cms
