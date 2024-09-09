@@ -45,6 +45,7 @@ def plot_flow_vs_depth_by_point(point_depths):
     Parameters:
     point_depths (dict): Dictionary where keys are point indices and values are dictionaries of flow values vs max depths.
     """
+    flow_value_dict = {}
     for point_idx, depths in point_depths.items():
         flow_values = list(depths.keys())
         max_depths = list(depths.values())
@@ -74,12 +75,14 @@ def plot_flow_vs_depth_by_point(point_depths):
         plt.grid(True)
         plt.legend()
 
-        plt.show()
+        #plt.show()
+        flow_value_dict[point_idx] = flow_values[leveling_out_index]
+    return flow_value_dict
 
-# Example usage
 thalweg_shapefile = r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Depth Leving Test\ME_Thalweg_Points.gpkg"
 flow_raster_dict = {
-    0.5: r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_005.tif",
+    # 0.25 : r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_0025cms.tif",
+    0.5: r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_005cms.tif",
     1: r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_01cms.tif",
     2: r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_02cms.tif",
     3: r"Y:\ATD\GIS\Bennett\Valley Widths\Valley_Footprints\Hydraulic Model\Max Depth Rasters\ME_03cms.tif",
@@ -96,4 +99,7 @@ flow_raster_dict = {
 max_depths = extract_max_depths_by_point(thalweg_shapefile, flow_raster_dict)
 
 # Plot flow vs max depth and second derivative
-plot_flow_vs_depth_by_point(max_depths)
+flow_value_dict = plot_flow_vs_depth_by_point(max_depths)
+
+for point, flow in flow_value_dict.items():
+    print(f"Point {point} levels out at flow value {flow}")

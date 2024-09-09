@@ -1,12 +1,12 @@
 import pyHMT2D
-from preprocessing.get_plan_names import extract_plan_titles
+from preprocessing.get_plan_names import extract_plan_titles_from_dir
 from preprocessing.set_current_plan import set_current_plan
 import os
 
 def run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array = []):
     # Get the list of all plans in the project
     if not plan_array:
-        plans = extract_plan_titles(os.path.dirname(project_file))
+        plans = extract_plan_titles_from_dir(os.path.dirname(project_file))
         #get just the plan names from dictionary {file: plan}
         plan_array = {file for file, plan in plans.items()}
         print("Plans in the project:", plans)
@@ -47,9 +47,13 @@ def run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array = []):
         my_hec_ras_model.exit_model()
 
 if __name__ == "__main__":
-    project_file = r"C:\ATD\Hydraulic Models\Bennett_MC\ME\ME_Valleys.prj"
+    project_file_list = [r"C:\ATD\Hydraulic Models\Bennett_MC\UW\UW_Valleys.prj",
+                    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_Valleys.prj",
+                    r"C:\ATD\Hydraulic Models\Bennett_MC\UE\UE_Valleys.prj",
+    ]
     terrain_file = r"C:\ATD\Hydraulic Models\Bennett_MC Backup\Terrain\Terrain.Terrain (1).dem_2021_bennett_clip_filtered.tif"
     plan_array =[]
-    run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array)
+    for project_file in project_file_list:
+        run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array)
 
     print("All done!")
