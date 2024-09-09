@@ -4,24 +4,24 @@ import shutil
 # List of folders containing the .tif files exported from HEC-RAS
 # Output tif files are named as "MM_0o25cms.tif", "MM_0o75cms.tif", etc.
 folders = [
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_0o25cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_0o75cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_1cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_1o50cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_2cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_3cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_4cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_5cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_6cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_7cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_8cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_9cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_10cms",
-    r"C:\ATD\Hydraulic Models\Bennett_MC\MM\MM_point5cms"
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_0o5cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_0o25cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_0o75cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_1cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_1o50cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_2cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_3cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_4cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_5cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_6cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_7cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_8cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_9cms",
+    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_10cms",
 ]
 
 # Output folder to store renamed files
-output_folder = r"C:\ATD\Hydraulic Models\Bennett_MC\MM\Results"
+output_folder = r"C:\ATD\Hydraulic Models\Bennett_MC\UM\Results"
 
 # Ensure the output folder exists
 if not os.path.exists(output_folder):

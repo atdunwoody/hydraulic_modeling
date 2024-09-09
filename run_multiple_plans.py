@@ -47,12 +47,14 @@ def run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array = []):
         my_hec_ras_model.exit_model()
 
 if __name__ == "__main__":
-    project_file_list = [r"C:\ATD\Hydraulic Models\Bennett_MC\UW\UW_Valleys.prj",
-                    r"C:\ATD\Hydraulic Models\Bennett_MC\UM\UM_Valleys.prj",
+    project_file_list = [
                     r"C:\ATD\Hydraulic Models\Bennett_MC\UE\UE_Valleys.prj",
     ]
     terrain_file = r"C:\ATD\Hydraulic Models\Bennett_MC Backup\Terrain\Terrain.Terrain (1).dem_2021_bennett_clip_filtered.tif"
-    plan_array =[]
+    plan_array =[
+                 'p02', 'p04', 'p05', 'p06', 
+                'p07', 'p08', 'p09', 'p10', 'p11', 'p12', 'p13', 'p14']
+                 
     for project_file in project_file_list:
         run_multiple_HEC_RAS_plans(project_file, terrain_file, plan_array)
 
