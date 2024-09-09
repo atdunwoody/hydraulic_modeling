@@ -20,8 +20,8 @@ def extract_plan_titles_from_dir(directory):
         # Skip files that end with .hdr and files that do not match the '*.p*' pattern
         if filename.endswith(".hdr") or not any(filename.endswith(ext) for ext in [f".p{str(i).zfill(2)}" for i in range(100)]):
             continue
-        
-        plan_titles[filename] = extract_plan_title_from_file(filename)
+        file_path = os.path.join(directory, filename)
+        plan_titles[filename] = extract_plan_title_from_file(file_path)
                
     return plan_titles
 
